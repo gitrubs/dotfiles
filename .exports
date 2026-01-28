@@ -1,0 +1,30 @@
+# Android SDK ADB
+export ANDROID_HOME=$HOME/Library/Android/sdk
+export PATH=$ANDROID_HOME/tools:$PATH
+export PATH=$ANDROID_HOME/platform-tools:$PATH
+
+# Homebrew
+export PATH="/opt/homebrew/bin:$PATH"
+
+# Pyenv
+source /Users/rubens.gondek/pyenv/.pyenvrc
+source /Users/rubens.gondek/pyenv/completions/pyenv.zsh
+
+# Dart CLI Completion
+[[ -f /Users/rubens.gondek/.dart-cli-completion/zsh-config.zsh ]] && . /Users/rubens.gondek/.dart-cli-completion/zsh-config.zsh || true
+
+# Ruby
+eval "$(rbenv init - zsh)"
+
+# Pub installs executables (e.g. to run melos or very_good)
+export PATH="$PATH":"$HOME/.pub-cache/bin"
+
+# Dart executable (some Pub install executables run dart directly, e.g. melos or very_good)
+export PATH="$PATH:$HOME/fvm/default/bin"
+
+# SDKMAN
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="/Users/rubens.gondek/.sdkman"
+[[ -s "/Users/rubens.gondek/.sdkman/bin/sdkman-init.sh" ]] && source "/Users/rubens.gondek/.sdkman/bin/sdkman-init.sh"
+export SDKMAN_OFFLINE_MODE=false
+export JAVA_HOME="/Users/rubens.gondek/.sdkman/candidates/java/current"

@@ -1,3 +1,10 @@
+[user]
+	email = rubens.gondek@gmail.com
+[init]
+	defaultBranch = main
+[url "git@github.com:"]
+	insteadOf = https://github.com/
+
 [alias]
   # View the SHA, description, and history graph of the latest 20 commits
   l = log --pretty=oneline -n 20 --graph
@@ -6,6 +13,8 @@
   s = status -sb
   # Show the diff between the latest commit and the currentt state
   d = !"git diff-index --quiet HEAD -- || clear; git diff --patch-with-stat"
+  # Update main branch with the latest changes from the remote repository
+  update = !"git checkout main && git fetch origin main && git pull origin main && git checkout -"
   # Show verbose output about tags, branches or remotes
   tags = tag -l
   branches = branch -a
@@ -50,7 +59,7 @@
 
 [merge] # Include summaries of merged commits in newly created merge commit messages
   log = true
-	tool = vimdiff
+	tool = cursor
 
 [push]
   default = simple
@@ -66,6 +75,3 @@
 
 [help]
 	autocorrect = 0
-
-[commit]
-	gpgsign = true

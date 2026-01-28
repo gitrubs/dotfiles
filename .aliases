@@ -13,6 +13,37 @@ alias lsd='ls -l | grep "^d"'
 # Usage: `pdfmerge -o output.pdf input{1,2,3}.pdf`
 alias pdfmerge='/System/Library/Automator/Combine\ PDF\ Pages.action/Contents/Resources/join.py'
 
+# Audio and video files
+# Usage: `compress_video input.mp4 output.mp4`
+function compress_video() {
+  if [[ $# -ne 1 ]]; then
+    echo "Usage: compress_video <input_file>"
+    return 1
+  fi
+  ffmpeg -i $1 -c:v libx264 -crf 28 -c:a aac -b:a 128k $1'_reduced.mp4'
+}
+alias compress_video=compress_video
+
+# Usage: `shrink_video input.mp4 480` will compress the video to 480p
+function shrink_video() {
+  if [[ $# -ne 2 ]]; then
+    echo "Usage: shrink_video <input_file> <target_height>"
+    return 1
+  fi
+  ffmpeg -i $1 -vf scale=-1:$2 $1'_'$2'.mp4'
+}
+alias shrink_video=shrink_video
+
+# Usage: `video_to_480p input.mp4` will compress the video to 480p
+function video_to_480p() {
+  if [[ $# -ne 1 ]]; then
+    echo "Usage: video_to_480p <input_file>"
+    return 1
+  fi
+  ffmpeg -i $1 -vf scale=854:480 -c:v libx264 -crf 28 -c:a aac -b:a 128k '[480p] '$1
+}
+alias video_to_480p=video_to_480p
+
 # Quick home
 function home() {
   cd ~/$@
@@ -66,13 +97,13 @@ alias getpassword=getpassword
 alias home=home
 
 # Reload bashrc
-alias reload=". ~/.bashrc"
+alias reload=". ~/.zshrc"
 
-# Move to Code folder
-alias code="cd ~/Code"
+# Move to development folder
+alias dev="cd ~/dev"
 
 # Apps
-alias xcode="open -a '/Developer/Applications/Xcode-beta.app'"
+alias xcode="open -a '/Developer/Applications/Xcode.app'"
 alias filemerge="open -a '/Developer/Applications/Utilities/FileMerge.app'"
 alias safari="open -a safari"
 alias chrome="open -a google\ chrome"
@@ -80,6 +111,7 @@ alias simulator='open /Applications/Xcode-beta.app/Contents/Developer/Applicatio
 
 # Github
 alias gh="open https://github.com/gitrubs"
+alias ggup="git checkout main && git fetch origin main && git pull origin main && git checkout -"
 
 # github repo
 # Open the git repository in the browser if git remote origin is defined
@@ -117,3 +149,13 @@ alias ghbranch=gh_branch
 alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
 alias ips="ifconfig -a | perl -nle'/(\d+\.\d+\.\d+\.\d+)/ && print $1'"
 
+# Qli
+alias file_from_secret=file_from_secret
+
+function file_from_secret() {
+  if [[ $# -ne 2 ]]; then
+    echo "Usage: file_from_secret <secret_path> <file_name>"
+    return 1
+  fi
+  qli kv get $1 | sed 's/^value: //' | openssl enc -base64 -d -A > $2
+}
